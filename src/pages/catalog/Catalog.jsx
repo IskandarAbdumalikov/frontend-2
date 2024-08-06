@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./catalog.scss";
 import { useGetProductsQuery } from "../../context/api/productApi";
-import { Slider, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import {
+  Slider,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Skeleton,
+} from "@mui/material";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { toggleHeart } from "../../context/slices/wishlistSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,12 +20,22 @@ import tWhite from "../../assets/tWhite.svg";
 
 const Catalog = () => {
   let { category } = useParams();
-   useEffect(() => {
-     window.scrollTo(0, 0);
-   }, [category]);
-  const { data } = useGetProductsQuery({
-    category,
-  });
+  console.log("Category from URL:", category);
+
+  if (category === "Дляванной") {
+    category = "Дляванной";
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [category]);
+
+  const { data, error, isLoading } = useGetProductsQuery({ category });
+
+  console.log("Fetched Data:", data);
+  console.log("Error:", error);
+  console.log("Is Loading:", isLoading);
+
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [rating, setRating] = useState([0, 5]);
   const [count, setCount] = useState([0, 10]);
@@ -72,19 +88,36 @@ const Catalog = () => {
     return res;
   };
 
-  const filteredProducts = data?.filter(
-    (product) =>
-      product.price >= priceRange[0] &&
-      product.price <= priceRange[1] &&
-      product.rating >= rating[0] &&
-      product.rating <= rating[1] &&
-      product.count >= count[0] &&
-      product.count <= count[1] &&
-      (selectedMadePlaces.length === 0 ||
-        selectedMadePlaces.includes(product.madePlace)) &&
-      (selectedSizes.length === 0 || selectedSizes.includes(product.size)) &&
-      (selectedColors.length === 0 || selectedColors.includes(product.color))
-  );
+  const filteredProducts = data?.filter((product) => {
+    const passesPriceFilter =
+      product.price >= priceRange[0] && product.price <= priceRange[1];
+    const passesRatingFilter =
+      product.rating >= rating[0] && product.rating <= rating[1];
+    const passesCountFilter =
+      product.count >= count[0] && product.count <= count[1];
+    const passesMadePlaceFilter =
+      selectedMadePlaces.length === 0 ||
+      selectedMadePlaces.includes(product.madePlace);
+    const passesSizeFilter =
+      selectedSizes.length === 0 || selectedSizes.includes(product.size);
+    const passesColorFilter =
+      selectedColors.length === 0 || selectedColors.includes(product.color);
+
+    console.log(
+      `Product ${product.title} - Price: ${passesPriceFilter}, Rating: ${passesRatingFilter}, Count: ${passesCountFilter}, MadePlace: ${passesMadePlaceFilter}, Size: ${passesSizeFilter}, Color: ${passesColorFilter}`
+    );
+
+    return (
+      passesPriceFilter &&
+      passesRatingFilter &&
+      passesCountFilter &&
+      passesMadePlaceFilter &&
+      passesSizeFilter &&
+      passesColorFilter
+    );
+  });
+
+  console.log("Filtered Products:", filteredProducts);
 
   return (
     <div className="catalog container">
@@ -177,7 +210,7 @@ const Catalog = () => {
         <div className="catalog__left__card__filters catalog__left__card">
           <h4>Цвет</h4>
           <FormGroup>
-            {["Blue", "Red", "Green"].map((color) => (
+            {["Blue", "Red", "Green", "Gold"].map((color) => (
               <FormControlLabel
                 control={
                   <Checkbox
@@ -197,7 +230,29 @@ const Catalog = () => {
       <div className="catalog__right">
         <h2>{category}</h2>
         <div className="new__catalog__cards">
-          {filteredProducts?.length > 0 ? (
+          {isLoading ? (
+            Array.from(new Array(3)).map((_, index) => (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+                key={index}
+              >
+                <Skeleton
+                  key={index}
+                  variant="rectangular"
+                  width={210}
+                  height={300}
+                  style={{borderRadius: "10px"}}
+                  className="new__cards__item__skeleton"
+                />
+              </div>
+            ))
+          ) : error ? (
+            <p>Ошибка получения данных.</p>
+          ) : filteredProducts?.length > 0 ? (
             filteredProducts?.map((item) => (
               <div className="new__cards__item" key={item.id}>
                 <div className="new__cards__item__img">
@@ -217,35 +272,19 @@ const Catalog = () => {
                 </div>
                 <div className="new__cards__item__info">
                   <h3>{item.title}</h3>
-                  <p>Размер: {item.size}</p>
-                  <p>Производитель: {item.madePlace}</p>
-                  <div className="rating">
-                    <div className="rating__stars">
-                      {getRating(item.rating)}
-                    </div>
-                    <p>{item.comments?.length} отзывов</p>
+                  <p>{item.category}</p>
+                  <div className="new__cards__item__price">
+                    <h4>{item.oldPrice ? `${item.oldPrice} тенге` : ""}</h4>
+                    <h3>{item.price} тенге</h3>
                   </div>
-                  <div className="price__titles">
-                    <p className="sena">Цена</p>
-                    <p className="sena">В рассрочку</p>
-                  </div>
-                  <div className="prices">
-                    <h3>
-                      <span>{item.price}</span> <img src={t} alt="" />
-                    </h3>
-                    <span>
-                      <span>
-                        {(item.price / 12)?.toFixed(2)}{" "}
-                        <img src={tWhite} alt="" />
-                      </span>{" "}
-                      х 12 мес
-                    </span>
+                  <div className="new__cards__item__rating">
+                    {getRating(item.rating)}
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <h1 style={{width: "100%", textAlign: "center",textWrap:"nowrap"}}>В этой категории товаров не найдено</h1>
+            <p>Товары не найдены.</p>
           )}
         </div>
       </div>

@@ -19,9 +19,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleHeart } from "../../context/slices/wishlistSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import SwiperProducts from "../../components/swiperProducts/SwiperProducts";
+import { Skeleton } from "@mui/material";
 
 const Home = () => {
-  const { data } = useGetProductsQuery();
+  const { data, isLoading, isFetching } = useGetProductsQuery();
   const dispatch = useDispatch();
   const wishlistData = useSelector((state) => state.wishlist.value);
 
@@ -91,50 +92,61 @@ const Home = () => {
             modules={[Pagination, Navigation]}
             className="mySwiper"
           >
-            {data
-              ?.filter((el) => el.status === "discount")
-              .map((item) => (
-                <SwiperSlide className="new__cards__item" key={item.id}>
-                  <div className="new__cards__item__img">
-                    <div className="new__cards__item__btns">
-                      <span>-20%</span>
-                      <button onClick={() => dispatch(toggleHeart(item))}>
-                        {wishlistData.some((el) => el.id === item.id) ? (
-                          <FaHeart color="crimson" />
-                        ) : (
-                          <FaRegHeart />
-                        )}
-                      </button>
-                    </div>
-                    <Link to={`/product/${item.id}`}>
-                      <img src={item.images[0]} alt={item.title} />
-                    </Link>
-                  </div>
-                  <div className="new__cards__item__info">
-                    <h3>{item.title}</h3>
-                    <p>Размер: {item.size}</p>
-                    <p>Производитель: {item.madePlace}</p>
-                    <div className="rating">
-                      <div className="rating__stars">
-                        {getRating(item.rating)}
+            {isLoading || isFetching
+              ? Array.from(new Array(6)).map((_, index) => (
+                  <Skeleton
+                    key={index}
+                    variant="rectangular"
+                    width={210}
+                    height={300}
+                    style={{ borderRadius: "10px" }}
+                    className="new__cards__item__skeleton"
+                  />
+                ))
+              : data
+                  ?.filter((el) => el.status === "discount")
+                  .map((item) => (
+                    <SwiperSlide className="new__cards__item" key={item.id}>
+                      <div className="new__cards__item__img">
+                        <div className="new__cards__item__btns">
+                          <span>-20%</span>
+                          <button onClick={() => dispatch(toggleHeart(item))}>
+                            {wishlistData.some((el) => el.id === item.id) ? (
+                              <FaHeart color="crimson" />
+                            ) : (
+                              <FaRegHeart />
+                            )}
+                          </button>
+                        </div>
+                        <Link to={`/product/${item.id}`}>
+                          <img src={item.images[0]} alt={item.title} />
+                        </Link>
                       </div>
-                      <p>{item.comments?.length} отзывов</p>
-                    </div>
-                    <div className="price__titles">
-                      <p className="sena">Старая цена</p>
-                      <p className="sena">Новая цена</p>
-                    </div>
-                    <div className="prices">
-                      <h3 style={{ textDecoration: "line-through" }}>
-                        <span>{item.oldPrice}</span> <img src={t} alt="" />
-                      </h3>
-                      <h3>
-                        <span>{item.price}</span> <img src={t} alt="" />
-                      </h3>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
+                      <div className="new__cards__item__info">
+                        <h3>{item.title}</h3>
+                        <p>Размер: {item.size}</p>
+                        <p>Производитель: {item.madePlace}</p>
+                        <div className="rating">
+                          <div className="rating__stars">
+                            {getRating(item.rating)}
+                          </div>
+                          <p>{item.comments?.length} отзывов</p>
+                        </div>
+                        <div className="price__titles">
+                          <p className="sena">Старая цена</p>
+                          <p className="sena">Новая цена</p>
+                        </div>
+                        <div className="prices">
+                          <h3 style={{ textDecoration: "line-through" }}>
+                            <span>{item.oldPrice}</span> <img src={t} alt="" />
+                          </h3>
+                          <h3>
+                            <span>{item.price}</span> <img src={t} alt="" />
+                          </h3>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
           </Swiper>
         </div>
       </div>

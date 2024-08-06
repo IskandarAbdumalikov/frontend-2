@@ -23,9 +23,10 @@ import {
   increaseAmount,
   remove,
 } from "../../context/slices/cartSlice";
+import { Skeleton } from "@mui/material";
 
 const SwiperProducts = ({ showHeader, isWishlist }) => {
-  let { data: mainData } = useGetProductsQuery();
+  let { data: mainData, isLoading } = useGetProductsQuery();
 
   const getRating = (rating) => {
     let res = [];
@@ -80,7 +81,18 @@ const SwiperProducts = ({ showHeader, isWishlist }) => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
-          {isWishlist
+          {isLoading
+            ? Array.from(new Array(6)).map((_, index) => (
+                <Skeleton
+                  key={index}
+                  variant="rectangular"
+                  width={210}
+                  height={300}
+                  style={{ borderRadius: "10px" }}
+                  className="new__cards__item__skeleton"
+                />
+              ))
+            : isWishlist
             ? data.map((item) => {
                 const selectedData = cartData.find(
                   (product) => product.id === item.id

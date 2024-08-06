@@ -39,7 +39,10 @@ footer {
       font-size: 14px;
       color: #1d1d1d;
       font-weight: 400;
-
+      &:hover {
+        transition: 0.3s;
+        color: #618c78;
+      }
       svg {
         color: #1d1d1d;
       }
@@ -52,6 +55,13 @@ footer {
 
       a {
         font-size: 24px;
+        &:hover {
+          svg {
+            transition: 0.3s;
+
+            color: #618c78;
+          }
+        }
       }
     }
 
