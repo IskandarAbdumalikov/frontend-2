@@ -102,7 +102,7 @@ const SinglePage = () => {
             </p>
             <p>
               Количество:{" "}
-              <div className="counter-btns">
+              <div style={{maxWidth: "100px"}} className="counter-btns">
                 {!selectedData ? (
                   <button
                     className="add-to-cart"

@@ -46,6 +46,7 @@ const SwiperProducts = ({ showHeader, isWishlist }) => {
   const cartData = useSelector((state) => state.cart.value);
 
   let data = isWishlist ? wishlistData : mainData;
+  console.log(data);
 
   return (
     <div className="home__products container">
@@ -62,7 +63,6 @@ const SwiperProducts = ({ showHeader, isWishlist }) => {
             clickable: true,
           }}
           breakpoints={{
-           
             570: {
               slidesPerView: 2,
               spaceBetween: 20,
@@ -80,102 +80,197 @@ const SwiperProducts = ({ showHeader, isWishlist }) => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
-          {data
-            ?.filter((el) => el.status === "new")
-            .map((item) => {
-              const selectedData = cartData.find(
-                (product) => product.id === item.id
-              );
-              return (
-                <SwiperSlide className="new__cards__card" key={item.id}>
-                  <div className="new__cards__item">
-                    <div className="new__cards__item__img">
-                      <div className="new__cards__item__btns">
-                        <span>Новинка</span>
-                        <button onClick={() => dispatch(toggleHeart(item))}>
-                          {wishlistData.some((el) => el.id === item.id) ? (
-                            <FaHeart color="crimson" />
-                          ) : (
-                            <FaRegHeart />
-                          )}
-                        </button>
-                      </div>
-                      <Link to={`/product/${item.id}`}>
-                        <img src={item.images[0]} />
-                      </Link>
-                    </div>
-                    <div className="new__cards__item__info">
-                      <h3>{item.title}</h3>
-                      <p>Размер: {item.size}</p>
-                      <p>Производитель: {item.madePlace}</p>
-                      <div className="rating">
-                        <div className="rating__stars">
-                          {getRating(item.rating)}
+          {isWishlist
+            ? data.map((item) => {
+                const selectedData = cartData.find(
+                  (product) => product.id === item.id
+                );
+                return (
+                  <SwiperSlide className="new__cards__card" key={item.id}>
+                    <div className="new__cards__item">
+                      <div className="new__cards__item__img">
+                        <div className="new__cards__item__btns">
+                          <span>Новинка</span>
+                          <button onClick={() => dispatch(toggleHeart(item))}>
+                            {wishlistData.some((el) => el.id === item.id) ? (
+                              <FaHeart color="crimson" />
+                            ) : (
+                              <FaRegHeart />
+                            )}
+                          </button>
                         </div>
-                        <p>{item.comments?.length} отзывов</p>
+                        <Link to={`/product/${item.id}`}>
+                          <img src={item.images[0]} />
+                        </Link>
                       </div>
-                      <div className="price__titles">
-                        <p className="sena">Цена</p>
-                        <p className="sena">В рассрочку</p>
-                      </div>
-                      <div className="prices">
-                        <h3>
-                          <span>{item.price}</span> <img src={t} alt="" />
-                        </h3>
-                        <span>
+                      <div className="new__cards__item__info">
+                        <h3>{item.title}</h3>
+                        <p>Размер: {item.size}</p>
+                        <p>Производитель: {item.madePlace}</p>
+                        <div className="rating">
+                          <div className="rating__stars">
+                            {getRating(item.rating)}
+                          </div>
+                          <p>{item.comments?.length} отзывов</p>
+                        </div>
+                        <div className="price__titles">
+                          <p className="sena">Цена</p>
+                          <p className="sena">В рассрочку</p>
+                        </div>
+                        <div className="prices">
+                          <h3>
+                            <span>{item.price}</span> <img src={t} alt="" />
+                          </h3>
                           <span>
-                            {(item.price / 12)?.toFixed(2)}{" "}
-                            <img src={tWhite} alt="" />
-                          </span>{" "}
-                          х 12 мес
-                        </span>
+                            <span>
+                              {(item.price / 12)?.toFixed(2)}{" "}
+                              <img src={tWhite} alt="" />
+                            </span>{" "}
+                            х 12 мес
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {isWishlist && (
-                    <div className="counter-btns">
-                      {!selectedData ? (
-                        <button
-                          className="add-to-cart"
-                          onClick={() => dispatch(add(item))}
-                        >
-                          В корзину
-                        </button>
-                      ) : (
-                        <>
-                          {selectedData.amount === 1 ? (
-                            <button
-                              className="remove-from-cart"
-                              onClick={() => dispatch(remove(selectedData))}
-                            >
-                              -
-                            </button>
-                          ) : (
+                    {isWishlist && (
+                      <div className="counter-btns">
+                        {!selectedData ? (
+                          <button
+                            className="add-to-cart"
+                            onClick={() => dispatch(add(item))}
+                          >
+                            В корзину
+                          </button>
+                        ) : (
+                          <>
+                            {selectedData.amount === 1 ? (
+                              <button
+                                className="remove-from-cart"
+                                onClick={() => dispatch(remove(selectedData))}
+                              >
+                                -
+                              </button>
+                            ) : (
+                              <button
+                                className="remove-from-cart"
+                                onClick={() =>
+                                  dispatch(decreaseAmount(selectedData))
+                                }
+                              >
+                                -
+                              </button>
+                            )}
+                            <span>{selectedData.amount}</span>
                             <button
                               className="remove-from-cart"
                               onClick={() =>
-                                dispatch(decreaseAmount(selectedData))
+                                dispatch(increaseAmount(selectedData))
                               }
                             >
-                              -
+                              +
                             </button>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </SwiperSlide>
+                );
+              })
+            : data
+                ?.filter((el) => el.status === "new")
+                .map((item) => {
+                  const selectedData = cartData.find(
+                    (product) => product.id === item.id
+                  );
+                  return (
+                    <SwiperSlide className="new__cards__card" key={item.id}>
+                      <div className="new__cards__item">
+                        <div className="new__cards__item__img">
+                          <div className="new__cards__item__btns">
+                            <span>Новинка</span>
+                            <button onClick={() => dispatch(toggleHeart(item))}>
+                              {wishlistData.some((el) => el.id === item.id) ? (
+                                <FaHeart color="crimson" />
+                              ) : (
+                                <FaRegHeart />
+                              )}
+                            </button>
+                          </div>
+                          <Link to={`/product/${item.id}`}>
+                            <img src={item.images[0]} />
+                          </Link>
+                        </div>
+                        <div className="new__cards__item__info">
+                          <h3>{item.title}</h3>
+                          <p>Размер: {item.size}</p>
+                          <p>Производитель: {item.madePlace}</p>
+                          <div className="rating">
+                            <div className="rating__stars">
+                              {getRating(item.rating)}
+                            </div>
+                            <p>{item.comments?.length} отзывов</p>
+                          </div>
+                          <div className="price__titles">
+                            <p className="sena">Цена</p>
+                            <p className="sena">В рассрочку</p>
+                          </div>
+                          <div className="prices">
+                            <h3>
+                              <span>{item.price}</span> <img src={t} alt="" />
+                            </h3>
+                            <span>
+                              <span>
+                                {(item.price / 12)?.toFixed(2)}{" "}
+                                <img src={tWhite} alt="" />
+                              </span>{" "}
+                              х 12 мес
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      {isWishlist && (
+                        <div className="counter-btns">
+                          {!selectedData ? (
+                            <button
+                              className="add-to-cart"
+                              onClick={() => dispatch(add(item))}
+                            >
+                              В корзину
+                            </button>
+                          ) : (
+                            <>
+                              {selectedData.amount === 1 ? (
+                                <button
+                                  className="remove-from-cart"
+                                  onClick={() => dispatch(remove(selectedData))}
+                                >
+                                  -
+                                </button>
+                              ) : (
+                                <button
+                                  className="remove-from-cart"
+                                  onClick={() =>
+                                    dispatch(decreaseAmount(selectedData))
+                                  }
+                                >
+                                  -
+                                </button>
+                              )}
+                              <span>{selectedData.amount}</span>
+                              <button
+                                className="remove-from-cart"
+                                onClick={() =>
+                                  dispatch(increaseAmount(selectedData))
+                                }
+                              >
+                                +
+                              </button>
+                            </>
                           )}
-                          <span>{selectedData.amount}</span>
-                          <button
-                            className="remove-from-cart"
-                            onClick={() =>
-                              dispatch(increaseAmount(selectedData))
-                            }
-                          >
-                            +
-                          </button>
-                        </>
+                        </div>
                       )}
-                    </div>
-                  )}
-                </SwiperSlide>
-              );
-            })}
+                    </SwiperSlide>
+                  );
+                })}
         </Swiper>
       </div>
     </div>

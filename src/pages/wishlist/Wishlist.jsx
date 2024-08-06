@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Wishlist = () => {
   const wishlistData = useSelector((state) => state.wishlist.value);
   const navigate = useNavigate();
+  
 
   return (
     <div className="wishlist container">
