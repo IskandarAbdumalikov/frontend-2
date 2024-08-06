@@ -1,0 +1,21 @@
+.wishlist {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding-top: 100px;
+  .empty__wishlist-btn{
+    background: #CB4A4A;
+    border: 1px solid #CB4A4A;
+    font-size: 18px;
+    width: 334px;
+    height: 52px;
+    border-radius: 10px;
+    color: white;
+  }
+}
+
+.empty-wishlist{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}

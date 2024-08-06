@@ -1,0 +1,218 @@
+.home__products {
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+  .mySwiper {
+    padding: 40px 0px;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .swiper {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .new__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    &__header {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      h2 {
+        font-size: 40px;
+        font-weight: 700;
+        @media (max-width: 400px) {
+          font-size: 30px;
+          font-weight: 600;
+        }
+        @media (max-width: 350px) {
+          font-size: 25px;
+          font-weight: 500;
+        }
+      }
+      a {
+        color: #648e7a;
+        border-bottom: 1px solid #648e7a;
+        padding-bottom: 3px;
+        @media (max-width: 400px) {
+          font-size: 12px;
+        }
+         @media (max-width: 350px) {
+         text-wrap: nowrap;
+        }
+      }
+    }
+    &__item {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-height: 450px;
+      box-shadow: 0px 0px 10px #00000016;
+      border-radius: 10px;
+      overflow: hidden;
+
+      .new__cards__item__img {
+        background: rgba(158, 158, 158, 0.256);
+        width: 100%;
+        height: 50%;
+        min-height: 225px;
+        position: relative;
+        .new__cards__item__btns {
+          position: absolute;
+          top: 20px;
+          left: 0px;
+          right: 0px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding-right: 20px;
+          z-index: 15;
+          span {
+            padding: 3px 20px;
+            color: white;
+            background: #618c78;
+          }
+          button {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 18px;
+          }
+        }
+        a {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          z-index: 9;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border: none;
+            outline: none;
+          }
+        }
+      }
+      &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+        padding: 10px;
+        h3 {
+          font-size: 18px;
+          color: #1d1d1d;
+        }
+        .sena {
+          font-size: 14px;
+          color: #1d1d1d;
+        }
+        .rating {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
+          justify-content: space-between;
+          &__stars {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            img {
+              width: 16px;
+              font-size: 16px;
+            }
+          }
+        }
+        .price__titles {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 100px;
+          width: 100%;
+        }
+        .prices {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 100px;
+          h3,
+          span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            img {
+              font-size: 14px;
+              width: 14px;
+            }
+          }
+          span {
+            text-wrap: nowrap;
+            font-size: 13px;
+            span {
+              padding: 2px 4px;
+              background: #618c78;
+              color: white;
+              svg {
+                color: white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.new__cards__card {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+.counter-btns {
+  width: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .remove-from-cart {
+    width: 30%;
+    height: 50px;
+    background: #cb4a4a;
+    border-radius: 10px;
+    font-size: 18px;
+    color: white;
+    border: 1px solid #cb4a4a;
+  }
+  .add-to-cart {
+    width: 100%;
+    height: 50px;
+    background: #cb4a4a;
+    border-radius: 10px;
+    font-size: 18px;
+    color: white;
+    border: 1px solid #cb4a4a;
+  }
+}

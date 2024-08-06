@@ -1,0 +1,205 @@
+.checkout {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 50px 0;
+
+  &__header {
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+  }
+
+  &__body {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+
+    &__left {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      &__top {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0px 0px 10px #0000001e;
+        border-radius: 10px;
+        padding: 30px;
+
+        h2 {
+          margin-bottom: 10px;
+        }
+
+        &__bottom {
+          display: flex;
+          flex-direction: column;
+          gap: 21px;
+
+          &__top {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 21px;
+            @media (max-width: 570px) {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          input {
+            height: 50px;
+            outline: none;
+            border: 1px solid #1d1d1d;
+            padding: 0 10px;
+            border-radius: 5px;
+          }
+
+          textarea {
+            height: 100px;
+            outline: none;
+            border: 1px solid #1d1d1d;
+            padding: 10px;
+            border-radius: 5px;
+            resize: none;
+          }
+        }
+      }
+
+      &__bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0px 0px 10px #0000001e;
+        border-radius: 10px;
+        padding: 30px;
+
+        h2 {
+          margin-bottom: 10px;
+        }
+
+        &__btns {
+          display: flex;
+          max-width: 300px;
+
+          button {
+            height: 50px;
+            width: 50%;
+            &:first-child {
+              border-radius: 10px 0px 0px 10px;
+            }
+            &:last-child {
+              border-radius: 0px 10px 10px 0px;
+              background-color: #f9f9f9;
+              color: #1d1d1d;
+            }
+          }
+        }
+
+        button {
+          height: 50px;
+          background-color: #cb4a4a;
+          color: white;
+          border: none;
+          border-radius: 10px;
+          max-width: 300px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    &__right {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      &__top {
+        box-shadow: 0px 0px 10px #0000001e;
+        border-radius: 10px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        &__info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          @media (max-width: 570px) {
+            h3{
+                font-size: 15px;
+            }
+          }
+        }
+        &__btn {
+          background: #cb4a4a;
+          height: 51px;
+          color: white;
+          border-radius: 10px;
+          border: 1px solid #cb4a4a;
+          font-size: 18px;
+          font-weight: 700;
+          transition: 0.3s;
+          outline: none;
+          &:hover {
+            background: #f9f9f9;
+            border-color: #f9f9f9;
+            color: #1d1d1d;
+          }
+        }
+      }
+      &__bottom {
+        box-shadow: 0px 0px 10px #0000001e;
+        border-radius: 10px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        &__card {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          span {
+            width: 20px;
+            font-size: 20px;
+          }
+        }
+        form {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+          input {
+            height: 43px;
+            border: 1px solid #1d1d1d;
+            outline: none;
+            border-radius: 10px;
+            background: transparent;
+            padding: 0 20px;
+          }
+          button {
+            background: #618c78;
+            border: 1px solid #618c78;
+            border-radius: 10px;
+            color: white;
+            height: 43px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .checkout__body {
+    flex-direction: column;
+    &__left {
+      width: 100%;
+    }
+    &__right {
+      width: 100%;
+    }
+  }
+}
