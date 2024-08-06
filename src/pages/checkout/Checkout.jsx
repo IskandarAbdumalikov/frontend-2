@@ -60,6 +60,7 @@ const Checkout = () => {
     const api = new XMLHttpRequest();
     api.open("GET", url, true);
     api.send();
+    localStorage.setItem("solded-data", JSON.stringify(cartData));
     dispatch(removeAll());
     toast.success("Заказ успешно оформлен!");
     navigate("/");

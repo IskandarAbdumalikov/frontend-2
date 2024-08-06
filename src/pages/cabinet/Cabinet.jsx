@@ -9,6 +9,13 @@ import { RiVisaFill } from "react-icons/ri";
 
 const Cabinet = () => {
   let [tab, setTab] = useState(1);
+  let data = JSON.parse(localStorage.getItem("solded-data"));
+  const totalAmount = data?.reduce(
+    (sum, item) => sum + item.price * item.amount,
+    0
+  );
+  console.log(totalAmount);
+
   return (
     <div className="cabinet container">
       <div className="cabinet__left">
@@ -16,9 +23,7 @@ const Cabinet = () => {
           <img width={70} height={70} src={userImg} alt="" />
           <div>
             <p>Здравствуйте,</p>
-            <h3 style={{ fontSize: "18px"}}>
-              Дмитрий Бондарчук
-            </h3>
+            <h3 style={{ fontSize: "18px" }}>Дмитрий Бондарчук</h3>
           </div>
         </div>
         <div
@@ -64,17 +69,16 @@ const Cabinet = () => {
                     38621264-0015
                   </p>
                 </div>
-                <p>489.000 Т, оплачено</p>
+                <p>{totalAmount} Т, оплачено</p>
               </div>
               <div className="cabinet__right__card__body">
                 <div className="cabinet__right__card__body__header">
                   <p>Статус заказа:</p> <span>Отправлен</span>
                 </div>
                 <div className="cabinet__right__card__body__body">
-                  <img
-                    src="https://s3-alpha-sig.figma.com/img/1877/2933/3a98f65572c518d65fe59a64c0d0c4d2?Expires=1724025600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=goRAsYPHXPCp7aPr44ERA~jKWvUhpTYW47Beh58g2ceQ~qTIVW1QtTCzeioO163WnM829Y5voTfqByxWSscfwM-7qHLd1H86jJdS2UDYkoF9EKZ42UJWFR~-kmNaFdQ~zL4RB0QraHI~HKLTkVl2Ws7TDx8oCavskGqlPdnRmB~0mGhpJ8qdaek4KfjoShDGLFD8~TjmzT9aBF1Ju78XqAeL55-LWqTbDyv1NI87cm34pie~A~~qbx0HohmSgmvcsa-a4JKooh~eCZ97UeOqsgmlRhZAZvmt8GMz~b1SfckKJs0lhA2j8ksFMRMIM2LjrNFxL6GjQ1r04qtnhetoHQ__"
-                    alt=""
-                  />
+                  {data?.map((item) => (
+                    <img src={item.images[0]} alt="" />
+                  ))}
                 </div>
               </div>
               <div className="cabinet__right__card__footer">
@@ -186,7 +190,7 @@ const Cabinet = () => {
             </div>
             <div style={{ padding: "15px" }} className="cabinet__right__card">
               <p>
-                <RiVisaFill />  Visa Debit (5993)
+                <RiVisaFill /> Visa Debit (5993)
               </p>
               <p>Истекает 07/22</p>
               <p>Vyacheslav Dmitrishin</p>
